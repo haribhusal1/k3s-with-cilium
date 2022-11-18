@@ -1,0 +1,26 @@
+---
+- name: 'template : Creating temporary helm values file /tmp/{{ target_namespace | default(helm_config.target_namespace) }}-{{ name }}-values.yml'
+  ansible.builtin.copy:
+    content: '{{ values_content | to_nice_yaml }}'
+    dest: /tmp/{{ target_namespace | default(helm_config.target_namespace) }}-{{ name }}-values.yml
+    owner: root
+    group: root
+    mode: o=rw,g=o=
+    force: true
+  changed_when: false
+
+- name: 'template : Running `helm template`'
+  ansible.builtin.command: >-
+    /usr/local/bin/helm template {{ name }} {{ chart }}
+    --namespace {{ target_namespace | default(helm_config.target_namespace) }}
+    --values /tmp/{{ target_namespace | default(helm_config.target_namespace) }}-{{ name }}-values.yml
+  register: helm_template_result
+  changed_when: false
+
+- name: 'template : Installing generated manifest {{ target_namespace | default(helm_config.target_namespace) }}/{{ name }}.yml'
+  ansible.builtin.include_role:
+    name: k3s
+    tasks_from: 'public/install manifest'
+  vars:
+    content: '{{ helm_template_result.stdout }}'
+    dest: '{{ target_namespace | default(helm_config.target_namespace) }}/{{ name }}.yml'

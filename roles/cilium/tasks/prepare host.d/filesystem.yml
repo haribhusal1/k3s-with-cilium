@@ -1,0 +1,13 @@
+---
+- name: 'Checking mounted filesystems'
+  command: mount
+  register: cilium_mounts
+  changed_when: false
+
+- name: 'Mounting eBPF filesystem'
+  when: '"/sys/fs/bpf" not in cilium_mounts.stdout'
+  ansible.posix.mount:
+    src: bpf
+    path: /sys/fs/bpf
+    fstype: bpf
+    state: mounted

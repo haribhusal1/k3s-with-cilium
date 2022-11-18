@@ -1,0 +1,18 @@
+# {{ ansible_managed }}
+
+---
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: '{{ name }}'
+  namespace: kube-system
+spec:
+  targetNamespace: '{{ target_namespace | default(helm_config.target_namespace) }}'
+  chart: '{{ chart }}'
+{% if version is defined %}
+  version: '{{ version }}'
+  repo: '{{ repo }}'
+{% endif %}
+  bootstrap: {{ bootstrap | default(helm_config.bootstrap) | lower }}
+  valuesContent: |-
+    {{ values_content | to_nice_yaml | indent(4) }}

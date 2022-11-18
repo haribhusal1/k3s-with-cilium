@@ -1,0 +1,5 @@
+---
+download_url: '{{ cilium_config.cli.install.download_base_url }}/v{{ cilium_config.cli.install.version}}/cilium-linux-amd64.tar.gz'
+checksum_url: '{{ cilium_config.cli.install.download_base_url }}/v{{ cilium_config.cli.install.version}}/cilium-linux-amd64.tar.gz.sha256sum'
+download_target: '/tmp/cilium-linux-amd64.tar.gz'
+extract_target: '/tmp/cilium'

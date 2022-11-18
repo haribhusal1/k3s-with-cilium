@@ -1,0 +1,54 @@
+---
+cilium_role_defaults:
+
+  enabled: true
+
+  helm:
+    name: cilium
+    chart: https://helm.cilium.io/cilium-1.11.4.tgz
+    target_namespace: kube-system
+
+  config:
+    ipam:
+      mode: kubernetes
+
+    k8s:
+      requireIPv4PodCIDR: true
+
+    kubeProxyReplacement: strict
+
+    containerRuntime:
+      integration: containerd
+      socketPath: /run/k3s/containerd/containerd.sock
+
+    prometheus:
+      enabled: true
+
+    operator:
+      nodeSelector:
+        node-role.kubernetes.io/control-plane: 'true'
+      prometheus:
+        enabled: true
+
+    hubble:
+      relay:
+        enabled: true
+        nodeSelector:
+          node-role.kubernetes.io/control-plane: 'true'
+        tolerations:
+        - operator: Exists
+      ui:
+        enabled: true
+        nodeSelector:
+          node-role.kubernetes.io/control-plane: 'true'
+        tolerations:
+        - operator: Exists
+
+  cli:
+    install:
+      version: 0.11.4
+      download_base_url: https://github.com/cilium/cilium-cli/releases/download
+
+cilium_playbook_defaults: {}
+cilium: {}
+cilium_config: '{{ cilium_role_defaults | combine(cilium_playbook_defaults, recursive=True) | combine(cilium, recursive=True) }}'

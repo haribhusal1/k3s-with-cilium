@@ -1,0 +1,60 @@
+---
+argument_specs:
+  main:
+    short_description: This tasks installs Helm binaries
+    options: {}
+
+  'public/chart':
+    short_description: This tasks install a HelmChart with k3s [helm-controller](https://rancher.com/docs/k3s/latest/en/helm/).
+    options:
+      name:
+        description: Helm Chart name
+        type: str
+        required: true
+      chart:
+        description: Helm Chart name in repository, or complete HTTPS URL to chart archive (.tgz)
+        type: str
+        required: true
+      version:
+        description: Helm Chart version (when installing from repository)
+        type: str
+        required: false
+      repo:
+        description: Helm Chart repository URL (when installing from repository)
+        type: str
+        required: false
+      target_namespace:
+        description: Helm Chart target namespace
+        type: str
+        required: false
+        default: '{{ helm_config.target_namespace }}'
+      bootstrap:
+        description: set to `true` if this chart is needed to bootstrap the cluster
+        type: bool
+        required: false
+        default: false
+      values_content:
+        description: override complex default Chart values
+        type: dict
+        required: true
+
+  'public/template':
+    short_description: This tasks call `helm template` with the given `values_content` and automatically deploy the resulting Kubernetes manifest with k3s [helm-controller](https://rancher.com/docs/k3s/latest/en/helm/#automatically-deploying-manifests-and-helm-charts).
+    options:
+      name:
+        description: Helm Chart name
+        type: str
+        required: true
+      chart:
+        description: complete HTTPS URL to chart archive (.tgz)
+        type: str
+        required: true
+      target_namespace:
+        description: Helm Chart target namespace
+        type: str
+        required: false
+        default: '{{ helm_config.target_namespace }}'
+      values_content:
+        description: override complex default Chart values
+        type: dict
+        required: true

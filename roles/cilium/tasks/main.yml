@@ -1,0 +1,12 @@
+---
+- name: 'Installing Cilium helm chart'
+  ansible.builtin.include_role:
+    name: helm
+    tasks_from: public/chart
+  vars:
+    name: '{{ cilium_config.helm.name }}'
+    chart: '{{ cilium_config.helm.chart }}'
+    target_namespace: '{{ cilium_config.helm.target_namespace }}'
+    values_content: '{{ cilium_config.config }}'
+    state: '{{ cilium_config.enabled | ternary("present", "absent") }}'
+    bootstrap: true

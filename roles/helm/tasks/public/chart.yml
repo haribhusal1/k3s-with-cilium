@@ -1,0 +1,8 @@
+---
+- name: 'chart : Installing chart {{ name }}'
+  ansible.builtin.include_role:
+    name: k3s
+    tasks_from: 'public/install manifest'
+  vars:
+    template: chart/helm-chart.yml.j2
+    dest: '{{ target_namespace | default(helm_config.target_namespace) }}/{{ name }}.yml'

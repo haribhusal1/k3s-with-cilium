@@ -1,0 +1,20 @@
+---
+- name: 'Gathering facts'
+  when: ansible_facts.keys() | length == 0
+  setup: {}
+
+- name: 'Loading OS specific variables from {{ ansible_system | lower }}/{{ ansible_architecture }}.yml'
+  ansible.builtin.include_vars:
+    name: cilium_install
+    file: '{{ ansible_system | lower }}/{{ ansible_architecture }}.yml'
+
+- name: 'Downloading and extracting Cilium CLI to management machine'
+  delegate_to: localhost
+  run_once: true
+  ansible.builtin.import_tasks: 'prepare host.d/download.yml'
+
+- name: 'Installing Cilium CLI'
+  ansible.builtin.import_tasks: 'prepare host.d/install.yml'
+
+- name: 'Mounting eBPF filesystem'
+  ansible.builtin.import_tasks: 'prepare host.d/filesystem.yml'

@@ -1,0 +1,17 @@
+---
+- name: 'Checking installed cilium binary'
+  ansible.builtin.stat:
+    path: /usr/local/bin/cilium
+  register: cilium_installed_binary
+
+- name: 'Installing Cilium CLI'
+  when: not cilium_installed_binary.stat.exists or (cilium_installed_binary.stat.checksum != cilium_downloaded_binary.stat.checksum)
+  become: true
+  ansible.builtin.copy:
+    src: '{{ cilium_install.extract_target }}'
+    dest: /usr/local/bin/cilium
+    owner: root
+    group: root
+    mode: u=rwx,g=rx,o=rx
+    force: true
+    checksum: '{{ cilium_downloaded_binary.stat.checksum }}'

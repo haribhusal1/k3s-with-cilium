@@ -1,0 +1,13 @@
+---
+helm_role_defaults:
+
+  install:
+    version: 3.8.2
+    download_base_url: https://get.helm.sh
+
+  target_namespace: default
+  bootstrap: false
+
+helm_playbook_defaults: {}
+helm: {}
+helm_config: '{{ helm_role_defaults | combine(helm_playbook_defaults, recursive=True) | combine(helm, recursive=True) }}'

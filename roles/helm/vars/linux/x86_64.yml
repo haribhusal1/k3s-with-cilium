@@ -1,0 +1,5 @@
+---
+download_url: '{{ helm_config.install.download_base_url }}/helm-v{{ helm_config.install.version }}-linux-amd64.tar.gz'
+checksum_url: '{{ helm_config.install.download_base_url }}/helm-v{{ helm_config.install.version }}-linux-amd64.tar.gz.sha256sum'
+download_target: '/tmp/helm-v{{ helm_config.install.version }}-linux-amd64.tar.gz'
+extract_target: '/tmp/linux-amd64'

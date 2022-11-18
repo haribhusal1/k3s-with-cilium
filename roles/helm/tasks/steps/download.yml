@@ -1,0 +1,19 @@
+---
+- name: 'Fetching archive from {{ helm_install.download_url }}'
+  ansible.builtin.get_url:
+    url: '{{ helm_install.download_url }}'
+    checksum: 'sha256:{{ helm_install.checksum_url }}'
+    dest: '{{ helm_install.download_target }}'
+    force: true
+  changed_when: false
+
+- name: 'Unpacking archive {{ helm_install.download_target }}'
+  ansible.builtin.unarchive:
+    src: '{{ helm_install.download_target }}'
+    dest: /tmp
+  changed_when: false
+
+- name: 'Creating checksum for downloaded helm binary'
+  ansible.builtin.stat:
+    path: '{{ helm_install.extract_target }}/helm'
+  register: helm_downloaded_binary

@@ -1,0 +1,19 @@
+---
+- name: 'Fetching archive from {{ cilium_install.download_url }}'
+  ansible.builtin.get_url:
+    url: '{{ cilium_install.download_url }}'
+    checksum: 'sha256:{{ cilium_install.checksum_url }}'
+    dest: '{{ cilium_install.download_target }}'
+    force: true
+  changed_when: false
+
+- name: 'Unpacking archive {{ cilium_install.download_target }}'
+  ansible.builtin.unarchive:
+    src: '{{ cilium_install.download_target }}'
+    dest: /tmp
+  changed_when: false
+
+- name: 'Creating checksum for downloaded binary'
+  ansible.builtin.stat:
+    path: '{{ cilium_install.extract_target }}'
+  register: cilium_downloaded_binary

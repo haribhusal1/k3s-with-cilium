@@ -1,0 +1,17 @@
+---
+- name: 'Checking installed helm binary'
+  ansible.builtin.stat:
+    path: /usr/local/bin/helm
+  register: helm_installed_binary
+
+- name: 'Installing helm'
+  when: not helm_installed_binary.stat.exists or (helm_installed_binary.stat.checksum != helm_downloaded_binary.stat.checksum)
+  become: true
+  ansible.builtin.copy:
+    src: '{{ helm_install.extract_target }}/helm'
+    dest: /usr/local/bin/helm
+    owner: root
+    group: root
+    mode: u=rwx,g=rx,o=rx
+    force: true
+    checksum: '{{ helm_downloaded_binary.stat.checksum }}'
