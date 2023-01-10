@@ -68,8 +68,6 @@ identify==2.5.8
     # via pre-commit
 idna==3.4
     # via requests
-importlib-resources==5.10.0
-    # via jsonschema
 jinja2==3.1.2
     # via
     #   ansible-core
@@ -118,8 +116,6 @@ pathspec==0.10.1
     # via
     #   black
     #   yamllint
-pkgutil-resolve-name==1.3.10
-    # via jsonschema
 platformdirs==2.5.2
     # via
     #   black
@@ -184,8 +180,6 @@ ruamel-yaml==0.17.21
     # via
     #   ansible-lint
     #   pre-commit-hooks
-ruamel-yaml-clib==0.2.7
-    # via ruamel-yaml
 selinux==0.2.1
     # via molecule-vagrant
 six==1.16.0
@@ -199,14 +193,6 @@ text-unidecode==1.3
     # via python-slugify
 toml==0.10.2
     # via pre-commit
-tomli==2.0.1
-    # via
-    #   black
-    #   pre-commit-hooks
-typing-extensions==4.4.0
-    # via
-    #   black
-    #   rich
 urllib3==1.26.12
     # via
     #   kubernetes
@@ -217,12 +203,10 @@ wcmatch==8.4.1
     # via ansible-lint
 websocket-client==1.4.2
     # via kubernetes
-yamllint==1.28.0
+yamllint==1.29.0
     # via
     #   -r requirements.in
     #   ansible-lint
-zipp==3.10.0
-    # via importlib-resources
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
